@@ -1,15 +1,14 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/wahooney.itch.io/green_grid.tres" type="Material" id=1]
 [ext_resource path="res://addons/godot-openxr/scenes/first_person_controller_vr.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/godot-xr-tools/assets/player_body.gd" type="Script" id=3]
-[ext_resource path="res://addons/godot-xr-tools/assets/left_hand.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/godot-xr-tools/functions/movement_direct.tscn" type="PackedScene" id=5]
-[ext_resource path="res://addons/godot-xr-tools/assets/right_hand.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/godot-xr-tools/functions/movement_turn.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/godot-xr-tools/functions/function_teleport.tscn" type="PackedScene" id=9]
-[ext_resource path="res://addons/godot-xr-tools/assets/player_body.tscn" type="PackedScene" id=10]
+[ext_resource path="res://addons/godot-xr-tools/player/player_body.tscn" type="PackedScene" id=10]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 1000, 1000 )
@@ -30,15 +29,14 @@ refresh_rate = 0.0
 [node name="LeftHandController" parent="FPController" index="2"]
 visible = true
 
-[node name="LeftHand" parent="FPController/LeftHandController" index="0" instance=ExtResource( 4 )]
+[node name="LeftHand" parent="FPController/LeftHandController" index="0" instance=ExtResource( 3 )]
 
 [node name="FunctionTeleport" parent="FPController/LeftHandController" index="1" instance=ExtResource( 9 )]
-camera = NodePath("../../ARVRCamera")
 
 [node name="RightHandController" parent="FPController" index="3"]
 visible = true
 
-[node name="RightHand" parent="FPController/RightHandController" index="0" instance=ExtResource( 6 )]
+[node name="RightHand" parent="FPController/RightHandController" index="0" instance=ExtResource( 4 )]
 
 [node name="MovementDirect" parent="FPController/RightHandController" index="1" instance=ExtResource( 5 )]
 enabled = true
@@ -48,8 +46,7 @@ strafe = false
 
 [node name="MovementTurn" parent="FPController/RightHandController" index="2" instance=ExtResource( 8 )]
 
-[node name="PlayerBody" type="Node" parent="FPController" instance=ExtResource( 10 )]
-script = ExtResource( 3 )
+[node name="PlayerBody" parent="FPController" instance=ExtResource( 10 )]
 
 [node name="Floor" type="StaticBody" parent="."]
 

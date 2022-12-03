@@ -4,38 +4,15 @@ extends KinematicBody
 # should really change this to Spatial once #17401 is resolved
 
 
+## XR Tools Function Teleport Script
 ##
-## Teleport Function Script
+## This script provides teleport functionality.
 ##
-## @desc:
-##     This script provides teleport functionality.
-##
-##     Add this scene as a sub scene of your ARVRController node to implement
-##     a teleport function on that controller.
-##
+## Add this scene as a sub scene of your ARVRController node to implement
+## a teleport function on that controller.
 
 
-# enum our buttons, should find a way to put this more central
-enum Buttons {
-	VR_BUTTON_BY = 1,
-	VR_GRIP = 2,
-	VR_BUTTON_3 = 3,
-	VR_BUTTON_4 = 4,
-	VR_BUTTON_5 = 5,
-	VR_BUTTON_6 = 6,
-	VR_BUTTON_AX = 7,
-	VR_BUTTON_8 = 8,
-	VR_BUTTON_9 = 9,
-	VR_BUTTON_10 = 10,
-	VR_BUTTON_11 = 11,
-	VR_BUTTON_12 = 12,
-	VR_BUTTON_13 = 13,
-	VR_PAD = 14,
-	VR_TRIGGER = 15
-}
-
-
-## Teleport enabled property
+## If true, teleporting is enabled
 export var enabled : bool = true setget set_enabled
 
 ## Teleport allowed color property
@@ -65,15 +42,10 @@ export (int, LAYERS_3D_PHYSICS) var valid_teleport_mask : int = ~0
 # once this is no longer a kinematic body, we'll need this..
 # export (int, LAYERS_3D_PHYSICS) var collision_mask = 1
 
-## Camera node path
-export var camera : NodePath
-
 ## Teleport button
-export (Buttons) var teleport_button : int = Buttons.VR_TRIGGER
+export (XRTools.Buttons) var teleport_button : int = XRTools.Buttons.VR_TRIGGER
 
 
-var origin_node : ARVROrigin
-var camera_node : ARVRCamera
 var is_on_floor : bool = true
 var is_teleporting : bool = false
 var can_teleport : bool = true
@@ -93,15 +65,26 @@ onready var ws : float = ARVRServer.world_scale
 # and add your own player character as child.
 onready var capsule : MeshInstance = get_node("Target/Player_figure/Capsule")
 
+## [ARVROrigin] node.
+onready var origin_node := ARVRHelpers.get_arvr_origin(self)
+
+## [ARVRCamera] node.
+onready var camera_node := ARVRHelpers.get_arvr_camera(self)
+
+## [ARVRController] node.
+onready var controller := ARVRHelpers.get_arvr_controller(self)
+
+
+# Add support for is_class on XRTools classes
+func is_class(name : String) -> bool:
+	return name == "XRToolsFunctionTeleport" or .is_class(name)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Do not initialise if in the editor
 	if Engine.editor_hint:
 		return
-
-	# We should be a child of an ARVRController and it should be a child or our ARVROrigin
-	origin_node = get_node("../..")
 
 	# It's inactive when we start
 	$Teleport.visible = false
@@ -111,12 +94,6 @@ func _ready():
 	$Teleport.mesh.size = Vector2(0.05 * ws, 1.0)
 	$Target.mesh.size = Vector2(ws, ws)
 	$Target/Player_figure.scale = Vector3(ws, ws, ws)
-
-	if camera:
-		camera_node = get_node(camera)
-	else:
-		# see if we can find our default
-		camera_node = origin_node.get_node('ARVRCamera')
 
 	# get our capsule shape
 	collision_shape = $CollisionShape.shape
@@ -135,13 +112,8 @@ func _physics_process(delta):
 	if Engine.editor_hint:
 		return
 
-	# We should be the child or the controller on which the teleport is implemented
-	var controller = get_parent()
-
-	if !origin_node:
-		return
-
-	if !camera_node:
+	# Skip if required nodes are missing
+	if !origin_node or !camera_node or !controller:
 		return
 
 	# if we're not enabled no point in doing mode
@@ -280,7 +252,7 @@ func _physics_process(delta):
 				color = cant_teleport_color
 
 			# check our axis to see if we need to rotate
-			teleport_rotation += (delta * controller.get_joystick_axis(0) * -4.0)
+			teleport_rotation += (delta * controller.get_joystick_axis(XRTools.Axis.VR_PRIMARY_X_AXIS) * -4.0)
 
 			# update target and colour
 			var target_basis = Basis()
@@ -332,9 +304,19 @@ func _physics_process(delta):
 
 # This method verifies the teleport has a valid configuration.
 func _get_configuration_warning():
-	if camera == null:
-		return "You need to assign a camera"
+	# Verify we can find the ARVROrigin
+	if !ARVRHelpers.get_arvr_origin(self):
+		return "This node must be within a branch of an ARVROrigin node"
 
+	# Verify we can find the ARVRCamera
+	if !ARVRHelpers.get_arvr_camera(self):
+		return "Unable to find ARVRCamera node"
+
+	# Verify we can find the ARVRController
+	if !ARVRHelpers.get_arvr_controller(self):
+		return "This node must be within a branch of an ARVRController node"
+
+	# Pass basic validation
 	return ""
 
 

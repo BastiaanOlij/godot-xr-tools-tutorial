@@ -15,33 +15,22 @@ extends XRToolsMovementProvider
 ##     and jump velocity.
 ##
 
-# enum our buttons, should find a way to put this more central
-enum Buttons {
-	VR_BUTTON_BY = 1,
-	VR_GRIP = 2,
-	VR_BUTTON_3 = 3,
-	VR_BUTTON_4 = 4,
-	VR_BUTTON_5 = 5,
-	VR_BUTTON_6 = 6,
-	VR_BUTTON_AX = 7,
-	VR_BUTTON_8 = 8,
-	VR_BUTTON_9 = 9,
-	VR_BUTTON_10 = 10,
-	VR_BUTTON_11 = 11,
-	VR_BUTTON_12 = 12,
-	VR_BUTTON_13 = 13,
-	VR_PAD = 14,
-	VR_TRIGGER = 15
-}
 
 ## Movement provider order
 export var order : int = 20
 
 ## Button to trigger jump
-export (Buttons) var jump_button_id : int = Buttons.VR_TRIGGER
+export (XRTools.Buttons) var jump_button_id : int = XRTools.Buttons.VR_TRIGGER
+
 
 # Node references
-onready var _controller: ARVRController = get_parent()
+onready var _controller := ARVRHelpers.get_arvr_controller(self)
+
+
+# Add support for is_class on XRTools classes
+func is_class(name : String) -> bool:
+	return name == "XRToolsMovementJump" or .is_class(name)
+
 
 # Perform jump movement
 func physics_movement(_delta: float, player_body: XRToolsPlayerBody, _disabled: bool):
@@ -57,9 +46,8 @@ func physics_movement(_delta: float, player_body: XRToolsPlayerBody, _disabled: 
 # This method verifies the movement provider has a valid configuration.
 func _get_configuration_warning():
 	# Check the controller node
-	var test_controller = get_parent()
-	if !test_controller or !test_controller is ARVRController:
-		return "Unable to find ARVR Controller node"
+	if !ARVRHelpers.get_arvr_controller(self):
+		return "This node must be within a branch of an ARVRController node"
 
 	# Call base class
 	return ._get_configuration_warning()

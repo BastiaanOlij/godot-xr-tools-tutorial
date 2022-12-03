@@ -20,32 +20,27 @@ extends Spatial
 ##
 
 
-# enum our buttons, should find a way to put this more central
-enum Buttons {
-	VR_BUTTON_BY = 1,
-	VR_GRIP = 2,
-	VR_BUTTON_3 = 3,
-	VR_BUTTON_4 = 4,
-	VR_BUTTON_5 = 5,
-	VR_BUTTON_6 = 6,
-	VR_BUTTON_AX = 7,
-	VR_BUTTON_8 = 8,
-	VR_BUTTON_9 = 9,
-	VR_BUTTON_10 = 10,
-	VR_BUTTON_11 = 11,
-	VR_BUTTON_12 = 12,
-	VR_BUTTON_13 = 13,
-	VR_PAD = 14,
-	VR_TRIGGER = 15,
-	VR_ACTION = 255
+## Enumeration of laser show modes
+enum LaserShow {
+	HIDE = 0,		## Hide laser
+	SHOW = 1,		## Show laser
+	COLLIDE = 2,	## Only show laser on collision
 }
 
+## Enumeration of laser length modes
+enum LaserLength {
+	FULL = 0,		## Full length
+	COLLIDE = 1		## Draw to collision
+}
 
 ## Pointer enabled property
 export var enabled : bool = true setget set_enabled
 
 ## Show laser property
-export var show_laser : bool = true setget set_show_laser
+export (LaserShow) var show_laser : int = LaserShow.SHOW setget set_show_laser
+
+## Laser length property
+export (LaserLength) var laser_length : int = LaserLength.FULL
 
 ## Show laser target
 export var show_target : bool = false
@@ -66,7 +61,7 @@ export var collide_with_bodies : bool = true setget set_collide_with_bodies
 export var collide_with_areas : bool = false setget set_collide_with_areas
 
 ## Active button
-export (Buttons) var active_button : int = Buttons.VR_TRIGGER
+export (XRTools.Buttons) var active_button : int = XRTools.Buttons.VR_TRIGGER
 
 ## Action to monitor (if button set to VR_ACTION)
 export var action = ""
@@ -85,6 +80,11 @@ var last_collided_at : Vector3 = Vector3.ZERO
 var ws : float = 1.0
 
 
+# Add support for is_class on XRTools classes
+func is_class(name : String) -> bool:
+	return name == "XRToolsFunctionPointer" or .is_class(name)
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Do not initialise if in the editor
@@ -95,10 +95,11 @@ func _ready():
 	ws = ARVRServer.world_scale
 
 	# If pointer-trigger is a button then subscribe to button signals
-	if active_button != Buttons.VR_ACTION:
-		# Get button press feedback from our parent (should be an ARVRController)
-		get_parent().connect("button_pressed", self, "_on_button_pressed")
-		get_parent().connect("button_release", self, "_on_button_release")
+	if active_button != XRTools.Buttons.VR_ACTION:
+		# Get button press feedback from controller
+		var controller := ARVRHelpers.get_arvr_controller(self)
+		controller.connect("button_pressed", self, "_on_button_pressed")
+		controller.connect("button_release", self, "_on_button_release")
 
 	# init our state
 	_update_y_offset()
@@ -117,7 +118,7 @@ func _process(_delta):
 		return
 
 	# If pointer-trigger is an action then check for action
-	if active_button == Buttons.VR_ACTION and action != "":
+	if active_button == XRTools.Buttons.VR_ACTION and action != "":
 		if Input.is_action_just_pressed(action):
 			_button_pressed()
 		elif !Input.is_action_pressed(action) and target:
@@ -166,9 +167,21 @@ func _process(_delta):
 				elif new_target.has_method("pointer_moved"):
 					new_target.pointer_moved(last_collided_at, new_at)
 
-		if last_target and show_target:
-			$Target.global_transform.origin = last_collided_at
-			$Target.visible = true
+		if last_target:
+			# Show target if configured
+			if show_target:
+				$Target.global_transform.origin = new_at
+				$Target.visible = true
+
+			# Show laser if set to show-on-collide
+			if show_laser == LaserShow.COLLIDE:
+				$Laser.visible = true
+
+			# Adjust laser length if set to collide-length
+			if laser_length == LaserLength.COLLIDE:
+				var collide_len : float = new_at.distance_to(global_transform.origin)
+				$Laser.mesh.size.z = collide_len
+				$Laser.translation.z = collide_len * -0.5
 
 		# remember our new position
 		last_collided_at = new_at
@@ -180,7 +193,18 @@ func _process(_delta):
 				last_target.pointer_exited()
 
 		last_target = null
+
+		# Ensure target is hidden
 		$Target.visible = false
+
+		# Hide laser if set to show-on-collide
+		if show_laser == LaserShow.COLLIDE:
+			$Laser.visible = false
+
+		# Restore laser length if set to collide-length
+		if laser_length == LaserLength.COLLIDE:
+			$Laser.mesh.size.z = distance
+			$Laser.translation.z = distance * -0.5
 
 
 # Set pointer enabled property
@@ -193,7 +217,7 @@ func set_enabled(p_enabled : bool) -> void:
 
 
 # Set show-laser property
-func set_show_laser(p_show : bool) -> void:
+func set_show_laser(p_show : int) -> void:
 	show_laser = p_show
 	if is_inside_tree():
 		_update_show_laser()
@@ -242,7 +266,7 @@ func _update_set_enabled() -> void:
 
 # Pointer show-laser update handler
 func _update_show_laser() -> void:
-	$Laser.visible = enabled and show_laser
+	$Laser.visible = enabled and show_laser == LaserShow.SHOW
 
 
 # Pointer Y offset update handler

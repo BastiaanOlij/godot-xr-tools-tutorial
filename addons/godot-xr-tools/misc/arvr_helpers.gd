@@ -2,18 +2,21 @@ tool
 class_name ARVRHelpers
 
 
+## XR Tools Helper Rountines
 ##
-## ARVR Helper Rountines
+## This script contains static functions to help find ARVR player nodes.
 ##
-## @desc:
-##     This script contains static functions to help find ARVR player nodes.
-##
-##     As these functions are static, the caller must pass in a node located
-##     somewhere under the players ARVROrigin.
-##
+## As these functions are static, the caller must pass in a node located
+## somewhere under the players [ARVROrigin].
 
 
-## Find the ARVR Origin from a player node and an optional path
+## Find the [ARVROrigin] node.
+##
+## This function searches for the [ARVROrigin] from the provided node. 
+## The caller may provide an optional path (relative to the node) to the 
+## [ARVROrigin] to support out-of-tree searches.
+##
+## The search is performed assuming the node is under the [ARVROrigin].
 static func get_arvr_origin(node: Node, path: NodePath = NodePath("")) -> ARVROrigin:
 	var origin: ARVROrigin
 
@@ -24,17 +27,25 @@ static func get_arvr_origin(node: Node, path: NodePath = NodePath("")) -> ARVROr
 			return origin
 
 	# Walk up the tree from the provided node looking for the origin
-	var current = node
-	while current:
-		origin = current as ARVROrigin
-		if origin:
-			return origin
-		current = current.get_parent()
+	origin = XRTools.find_ancestor(node, "*", "ARVROrigin")
+	if origin:
+		return origin
+
+	# We check our children but only one level
+	origin = XRTools.find_child(node, "*", "ARVROrigin", false)
+	if origin:
+		return origin
 
 	# Could not find origin
 	return null
 
-## Find the ARVR Camera from a player node and an optional path
+## Find the [ARVRCamera] node.
+##
+## This function searches for the [ARVRCamera] from the provided node. 
+## The caller may provide an optional path (relative to the node) to the 
+## [ARVRCamera] to support out-of-tree searches.
+##
+## The search is performed assuming the node is under the [ARVROrigin].
 static func get_arvr_camera(node: Node, path: NodePath = NodePath("")) -> ARVRCamera:
 	var camera: ARVRCamera
 
@@ -55,13 +66,31 @@ static func get_arvr_camera(node: Node, path: NodePath = NodePath("")) -> ARVRCa
 		return camera
 
 	# Search all children of the origin for the camera
-	for child in origin.get_children():
-		camera = child as ARVRCamera
-		if camera:
-			return camera
+	camera = XRTools.find_child(origin, "*", "ARVRCamera", false)
+	if camera:
+		return camera
 
 	# Could not find camera
 	return null
+
+## Find the [ARVRController] node.
+##
+## This function searches for the [ARVRController] from the provided node.
+## The caller may provide an optional path (relative to the node) to the
+## [ARVRController] to support out-of-tree searches.
+##
+## The search is performed assuming the node is under the [ARVRController].
+static func get_arvr_controller(node: Node, path: NodePath = NodePath("")) -> ARVRController:
+	var controller: ARVRController
+
+	# Try using the node path first
+	if path:
+		controller = node.get_node(path) as ARVRController
+		if controller:
+			return controller
+
+	# Search up from the node for the controller
+	return XRTools.find_ancestor(node, "*", "ARVRController") as ARVRController
 
 ## Find the Left Hand Controller from a player node and an optional path
 static func get_left_controller(node: Node, path: NodePath = NodePath("")) -> ARVRController:
@@ -71,7 +100,7 @@ static func get_left_controller(node: Node, path: NodePath = NodePath("")) -> AR
 static func get_right_controller(node: Node, path: NodePath = NodePath("")) -> ARVRController:
 	return _get_controller(node, "RightHandController", 2, path)
 
-## Find a controller given some search parameters
+# Find a controller given some search parameters
 static func _get_controller(var node: Node, var default_name: String, var id: int, var path: NodePath) -> ARVRController:
 	var controller: ARVRController
 
@@ -99,3 +128,4 @@ static func _get_controller(var node: Node, var default_name: String, var id: in
 
 	# Could not find the controller
 	return null
+
