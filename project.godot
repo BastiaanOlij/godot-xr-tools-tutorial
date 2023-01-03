@@ -346,6 +346,11 @@ config/icon="res://icon.png"
 
 XRToolsUserSettings="*res://addons/godot-xr-tools/user_settings/user_settings.gd"
 
+[display]
+
+window/size/width=1400
+window/size/height=900
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/godot-openxr/plugin.cfg", "res://addons/godot-xr-tools/plugin.cfg" )
