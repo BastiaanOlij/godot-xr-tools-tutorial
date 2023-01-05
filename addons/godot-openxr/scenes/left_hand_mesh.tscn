@@ -17,6 +17,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5 )
 script = ExtResource( 4 )
 
 [node name="Skeleton" parent="HandModel/Armature001" index="0"]
+bones/9/bound_children = [ NodePath("IndexTip") ]
 script = ExtResource( 3 )
 
 [node name="IndexTip" type="BoneAttachment" parent="HandModel/Armature001/Skeleton" index="1"]
