@@ -15,6 +15,9 @@ signal highlight_updated(pickable, enable)
 signal close_highlight_updated(pickable, enable)
 
 
+## Enable or disable snap-zone
+export var enabled : bool = true
+
 ## Grab distance
 export var grab_distance : float = 0.3 setget _set_grab_distance
 
@@ -41,6 +44,11 @@ var picked_up_ranged : bool = true
 var _object_in_grab_area = Array()
 
 
+# Add support for is_class on XRTools classes
+func is_class(name : String) -> bool:
+	return name == "XRToolsSnapZone" or .is_class(name)
+
+
 func _ready():
 	# Set collision shape radius
 	$CollisionShape.shape.radius = grab_distance
@@ -51,9 +59,15 @@ func _ready():
 
 # Called on each frame to update the pickup
 func _process(_delta):
+	# Skip if not enabled
+	if not enabled:
+		return
+
+	# Skip if already holding a valid object
 	if is_instance_valid(picked_up_object):
 		return
 
+	# Check for an object to grab
 	for o in _object_in_grab_area:
 		# skip objects that can not be picked up
 		if not o.can_pick_up(self):
@@ -66,6 +80,10 @@ func _process(_delta):
 
 # Pickable Method: snap-zone can be grabbed if holding object
 func can_pick_up(by: Spatial) -> bool:
+	# Refuse if not enabled
+	if not enabled:
+		return false
+
 	# Refuse if no object is held
 	if not is_instance_valid(picked_up_object):
 		return false

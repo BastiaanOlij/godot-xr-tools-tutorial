@@ -39,25 +39,6 @@ signal flight_started()
 signal flight_finished()
 
 
-# enum our buttons, should find a way to put this more central
-enum Buttons {
-	VR_BUTTON_BY = 1,
-	VR_GRIP = 2,
-	VR_BUTTON_3 = 3,
-	VR_BUTTON_4 = 4,
-	VR_BUTTON_5 = 5,
-	VR_BUTTON_6 = 6,
-	VR_BUTTON_AX = 7,
-	VR_BUTTON_8 = 8,
-	VR_BUTTON_9 = 9,
-	VR_BUTTON_10 = 10,
-	VR_BUTTON_11 = 11,
-	VR_BUTTON_12 = 12,
-	VR_BUTTON_13 = 13,
-	VR_PAD = 14,
-	VR_TRIGGER = 15
-}
-
 # Enumeration of controller to use for flight
 enum FlightController {
 	LEFT,		# Use left controller
@@ -92,7 +73,7 @@ export var order : int = 30
 export (FlightController) var controller : int = FlightController.LEFT
 
 ## Flight toggle button
-export (Buttons) var flight_button : int = Buttons.VR_BUTTON_BY
+export (XRTools.Buttons) var flight_button : int = XRTools.Buttons.VR_BUTTON_BY
 
 ## Flight pitch control
 export (FlightPitch) var pitch : int = FlightPitch.CONTROLLER
@@ -127,9 +108,14 @@ var _controller : ARVRController
 
 
 # Node references
-onready var _camera : ARVRCamera = ARVRHelpers.get_arvr_camera(self)
-onready var _left_controller : ARVRController = ARVRHelpers.get_left_controller(self)
-onready var _right_controller : ARVRController = ARVRHelpers.get_right_controller(self)
+onready var _camera := ARVRHelpers.get_arvr_camera(self)
+onready var _left_controller := ARVRHelpers.get_left_controller(self)
+onready var _right_controller := ARVRHelpers.get_right_controller(self)
+
+
+# Add support for is_class on XRTools classes
+func is_class(name : String) -> bool:
+	return name == "XRToolsMovementFlight" or .is_class(name)
 
 
 func _ready():
@@ -186,8 +172,8 @@ func physics_movement(delta: float, player_body: XRToolsPlayerBody, disabled: bo
 	var side := forwards.cross(Vector3.UP)
 
 	# Construct the target velocity
-	var joy_forwards := _controller.get_joystick_axis(1)
-	var joy_side := _controller.get_joystick_axis(0)
+	var joy_forwards := _controller.get_joystick_axis(XRTools.Axis.VR_PRIMARY_Y_AXIS)
+	var joy_side := _controller.get_joystick_axis(XRTools.Axis.VR_PRIMARY_X_AXIS)
 	var heading := forwards * joy_forwards + side * joy_side
 
 	# Calculate the flight velocity
@@ -228,5 +214,17 @@ func set_flying(active: bool) -> void:
 
 # This method verifies the movement provider has a valid configuration.
 func _get_configuration_warning():
+	# Verify the camera
+	if !ARVRHelpers.get_arvr_camera(self):
+		return "Unable to find ARVRCamera"
+
+	# Verify the left controller
+	if !ARVRHelpers.get_left_controller(self):
+		return "Unable to find left ARVRController node"
+
+	# Verify the right controller
+	if !ARVRHelpers.get_right_controller(self):
+		return "Unable to find left ARVRController node"
+
 	# Call base class
 	return ._get_configuration_warning()

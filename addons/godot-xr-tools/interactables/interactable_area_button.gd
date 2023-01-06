@@ -47,6 +47,11 @@ onready var _button_up := _button.transform.origin
 onready var _button_down := _button_up + displacement
 
 
+# Add support for is_class on XRTools classes
+func is_class(name : String) -> bool:
+	return name == "XRToolsInteractableAreaButton" or .is_class(name)
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Construct the button animation tween
@@ -80,7 +85,7 @@ func _on_button_entered(item: Spatial) -> void:
 		_tween.start()
 
 		# Emit the pressed signal
-		emit_signal("button_pressed")
+		emit_signal("button_pressed",self)
 
 
 # Called when an area or body exits the button area
@@ -98,7 +103,7 @@ func _on_button_exited(item: Spatial) -> void:
 		_tween.start()
 
 		# Emit the released signal
-		emit_signal("button_released")
+		emit_signal("button_released",self)
 
 
 # Check button configuration
