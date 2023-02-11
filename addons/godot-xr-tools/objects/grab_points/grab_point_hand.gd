@@ -10,24 +10,24 @@ extends XRToolsGrabPoint
 ## grab point position to be fine-tuned in the editor.
 
 
-## Left hand scene path (for editorpreview)
-const LEFT_HAND_PATH := "res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn"
-
-## Right hand scene path (for editor preview)
-const RIGHT_HAND_PATH := "res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn"
-
-
 ## Hand for this grab point
 enum Hand {
 	LEFT,	## Left hand
-	RIGHT	## Right hand
+	RIGHT,	## Right hand
 }
 
 ## Hand preview option
 enum PreviewMode {
-	CLOSED	## Preview hand closed
+	CLOSED,	## Preview hand closed
 	OPEN,	## Preview hand open
 }
+
+
+## Left hand scene path (for editor preview)
+const LEFT_HAND_PATH := "res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn"
+
+## Right hand scene path (for editor preview)
+const RIGHT_HAND_PATH := "res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn"
 
 
 ## Which hand this grab point is for
@@ -37,7 +37,8 @@ export (Hand) var hand : int setget _set_hand
 export var hand_pose : Resource setget _set_hand_pose
 
 ## If true, the hand is shown in the editor
-export (PreviewMode) var editor_preview_mode : int = PreviewMode.CLOSED setget _set_editor_preview_mode
+export (PreviewMode) \
+		var editor_preview_mode : int = PreviewMode.CLOSED setget _set_editor_preview_mode
 
 
 ## Hand to use for editor preview
@@ -57,17 +58,8 @@ func can_grab(_grabber : Node) -> bool:
 	if not enabled:
 		return false
 
-	# Ensure the pickup is valid
-	if not is_instance_valid(_grabber):
-		return false
-
-	# Ensure the pickup is a function pickup for a controller
-	var pickup := _grabber as XRToolsFunctionPickup
-	if not pickup:
-		return false
-
-	# Get the parent controller
-	var controller := pickup.get_controller()
+	# Get the grabber controller
+	var controller := _get_grabber_controller(_grabber)
 	if not controller:
 		return false
 
@@ -129,3 +121,18 @@ func _update_editor_preview() -> void:
 
 	# Add the editor-preview hand as a child
 	add_child(_editor_preview_hand)
+
+
+# Get the controller associated with a grabber
+static func _get_grabber_controller(_grabber : Node) -> ARVRController:
+	# Ensure the grabber is valid
+	if not is_instance_valid(_grabber):
+		return null
+
+	# Ensure the pickup is a function pickup for a controller
+	var pickup := _grabber as XRToolsFunctionPickup
+	if not pickup:
+		return null
+
+	# Get the controller associated with the pickup
+	return pickup.get_controller()

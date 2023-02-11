@@ -3,22 +3,35 @@ class_name XRToolsPhysicsHand
 extends XRToolsHand
 
 
+## XR Tools Physics Hand Script
 ##
-## XR Physics Hand Script
-##
-## @desc:
-##     This script extends the standard godot-xr-tools hand script to add
-##     collision and group settings for all physics bones in the hand.
-##
+## This script extends from the standard [XRToolsHand] and adds settings to
+## manage collision and group settings for all [XRToolsHandPhysicsBone] nodes
+## attached to the hand.
 
 
-## Collision layer for all bones in the hand
-export (int, LAYERS_3D_PHYSICS) var collision_layer : int = 1 << 17
+# Default hand bone layer of 18:player-hand
+const DEFAULT_LAYER := 0b0000_0000_0000_0010_0000_0000_0000_0000
 
-## Bone collision margin
+
+## Collision layer applied to all [XRToolsHandPhysicsBone] children.
+##
+## This is used to set physics collision layers for every bone in a hand.
+## Additionally [XRToolsHandPhysicsBone] nodes can specify additional
+## bone-specific collision layers - for example to give the fore-finger bone
+## additional collision capabilities.
+export (int, LAYERS_3D_PHYSICS) var collision_layer : int = DEFAULT_LAYER
+
+## Bone collision margin applied to all [XRToolsHandPhysicsBone] children.
+##
+## This is used for fine-tuning the collision margins for all
+## [XRToolsHandPhysicsBone] children in the hand.
 export var margin : float = 0.004
 
-## Bone group for all bones in the hand
+## Group applied to all [XRToolsHandPhysicsBone] children.
+##
+## This is used to set groups for every bone in the hand. Additionally
+## [XRToolsHandPhysicsBone] nodes can specify additional bone-specific groups.
 export var bone_group : String = ""
 
 

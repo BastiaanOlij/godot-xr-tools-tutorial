@@ -5,7 +5,7 @@ extends RigidBody
 
 ## XR Tools Pickable Object
 ##
-## This script allows a [RigidBody3D] to be picked up by an 
+## This script allows a [RigidBody3D] to be picked up by an
 ## [XRToolsFunctionPickup] attached to a players controller.
 ##
 ## Additionally pickable objects may support being snapped into
@@ -26,10 +26,6 @@ signal action_pressed(pickable)
 
 # Signal emitted when the highlight state changes
 signal highlight_updated(pickable, enable)
-
-
-# Priority for grip poses
-const GRIP_POSE_PRIORITY = 100
 
 
 ## Method used to hold object
@@ -55,14 +51,25 @@ enum PickableState {
 enum ReleaseMode {
 	ORIGINAL = -1,		## Preserve original mode when picked up
 	RIGID = 0,			## Release and make rigid (MODE_RIGID)
-	STATIC = 1			## Release and make static (MODE_STATIC)
+	STATIC = 1,			## Release and make static (MODE_STATIC)
 }
+
+
+# Default layer for held objects is 17:held-object
+const DEFAULT_LAYER := 0b0000_0000_0000_0001_0000_0000_0000_0000
+
+## Priority for grip poses
+const GRIP_POSE_PRIORITY = 100
+
+
+## If true, the pickable supports being picked up
+export var enabled : bool = true
 
 ## If true, the grip control must be held to keep the object picked up
 export var press_to_hold : bool = true
 
 ## Layer for this object while picked up
-export (int, LAYERS_3D_PHYSICS) var picked_up_layer = 0
+export (int, LAYERS_3D_PHYSICS) var picked_up_layer = DEFAULT_LAYER
 
 ## Method used to hold an object
 export (HoldMethod) var hold_method = HoldMethod.REMOTE_TRANSFORM
@@ -83,19 +90,19 @@ export var picked_by_exclude : String = ""
 export var picked_by_require : String = ""
 
 
-# Can object be grabbed at range
+## If true, the object can be picked up at range
 var can_ranged_grab: bool = true
 
-# Original RigidBody mode
+## Original RigidBody mode
 var original_mode
 
-# Entity holding this item
+## Entity holding this item
 var picked_up_by: Spatial = null
 
-# Controller holding this item (may be null if held by snap-zone)
+## Controller holding this item (may be null if held by snap-zone)
 var by_controller : ARVRController = null
 
-# Hand holding this item (may be null if held by snap-zone)
+## Hand holding this item (may be null if held by snap-zone)
 var by_hand : XRToolsHand = null
 
 # Count of 'is_closest' grabbers
@@ -139,7 +146,7 @@ func _ready():
 
 # Test if this object can be picked up
 func can_pick_up(_by: Spatial) -> bool:
-	return _state == PickableState.IDLE
+	return enabled and _state == PickableState.IDLE
 
 
 # Test if this object is picked up
@@ -184,8 +191,8 @@ func drop_and_free():
 
 # Called when this object is picked up
 func pick_up(by: Spatial, with_controller: ARVRController) -> void:
-	# Skip if not idle
-	if _state != PickableState.IDLE:
+	# Skip if disabled or already picked up
+	if not enabled or _state != PickableState.IDLE:
 		return
 
 	if picked_up_by:
@@ -271,6 +278,49 @@ func let_go(p_linear_velocity: Vector3, p_angular_velocity: Vector3) -> void:
 
 	# let interested parties know
 	emit_signal("dropped", self)
+
+
+## Get the controller currently holding this object
+func get_picked_up_by_controller() -> ARVRController:
+	return by_controller
+
+
+## Get the hand currently holding this object
+func get_picked_up_by_hand() -> XRToolsHand:
+	return by_hand
+
+
+## Get the active grab-point this object is held by
+func get_active_grab_point() -> XRToolsGrabPoint:
+	return _active_grab_point
+
+
+## Switch the active grab-point for this object
+func switch_active_grab_point(grab_point : XRToolsGrabPoint):
+	# Verify switching from one grab point to another
+	if not _active_grab_point or not grab_point or _state != PickableState.HELD:
+		return
+
+	# Set the new active grab-point
+	_active_grab_point = grab_point
+
+	# Update the hold transform
+	match hold_method:
+		HoldMethod.REMOTE_TRANSFORM:
+			# Update the remote transform
+			_remote_transform.transform = _active_grab_point.transform.inverse()
+
+		HoldMethod.REPARENT:
+			# Update our transform
+			transform = _active_grab_point.global_transform.inverse() * global_transform
+
+	# Update the pose
+	if by_hand and _active_grab_point:
+		var grab_point_hand := _active_grab_point as XRToolsGrabPointHand
+		if grab_point_hand and grab_point_hand.hand_pose:
+			by_hand.add_pose_override(self, GRIP_POSE_PRIORITY, grab_point_hand.hand_pose)
+		else:
+			by_hand.remove_pose_override(self)
 
 
 func _start_ranged_grab() -> void:
@@ -377,7 +427,7 @@ func _get_grab_point(_grabber : Node) -> XRToolsGrabPoint:
 		var grab_point : XRToolsGrabPoint = g
 		if grab_point.can_grab(_grabber):
 			return grab_point
-	
+
 	# No suitable grab-point found
 	return null
 

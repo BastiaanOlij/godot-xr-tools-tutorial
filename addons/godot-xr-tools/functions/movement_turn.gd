@@ -2,35 +2,31 @@ tool
 class_name XRToolsMovementTurn
 extends XRToolsMovementProvider
 
+
+## XR Tools Movement Provider for Turning
 ##
-## Movement Provider for Turning
-##
-## @desc:
-##     This script provides turning support for the player. This script works
-##     with the PlayerBody attached to the players ARVROrigin.
-##
-##     The following types of turning are supported:
-##      - Snap turning
-##      - Smooth turning
-##
+## This script provides turning support for the player. This script works
+## with the PlayerBody attached to the players [ARVROrigin].
+
+
+## Movement mode
+enum TurnMode {
+	DEFAULT,	## Use turn mode from project/user settings
+	SNAP,		## Use snap-turning
+	SMOOTH		## Use smooth-turning
+}
 
 
 ## Movement provider order
 export var order : int = 5
 
-## Movement mode
-enum TurnMode {
-	DEFAULT,
-	SNAP,
-	SMOOTH
-}
-
+## Movement mode property
 export (TurnMode) var turn_mode = TurnMode.DEFAULT
 
 ## Smooth turn speed in radians per second
 export var smooth_turn_speed : float = 2.0
 
-## Seconds per step (at maximum turn rate)
+## Seconds per step (at maximum turn rate), 0 for single turn
 export var step_turn_delay : float = 0.2
 
 ## Step turn angle in degrees
@@ -69,7 +65,12 @@ func physics_movement(delta: float, player_body: XRToolsPlayerBody, _disabled: b
 
 	# Handle smooth rotation
 	if !_snap_turning():
-		_rotate_player(player_body, smooth_turn_speed * delta * left_right)
+		left_right -= deadzone * sign(left_right)
+		player_body.rotate_player(smooth_turn_speed * delta * left_right)
+		return
+
+	# Disable repeat snap turning if delay is zero
+	if step_turn_delay == 0.0 and _turn_step < 0.0:
 		return
 
 	# Update the next turn-step delay
@@ -78,20 +79,9 @@ func physics_movement(delta: float, player_body: XRToolsPlayerBody, _disabled: b
 		return
 
 	# Turn one step in the requested direction
-	_turn_step = step_turn_delay
-	_rotate_player(player_body, deg2rad(step_turn_angle) * sign(left_right))
-
-
-# Rotate the origin node around the camera
-func _rotate_player(player_body: XRToolsPlayerBody, angle: float):
-	var t1 := Transform()
-	var t2 := Transform()
-	var rot := Transform()
-
-	t1.origin = -player_body.camera_node.transform.origin
-	t2.origin = player_body.camera_node.transform.origin
-	rot = rot.rotated(Vector3(0.0, -1.0, 0.0), angle)
-	player_body.origin_node.transform = (player_body.origin_node.transform * t2 * rot * t1).orthonormalized()
+	if step_turn_delay != 0.0:
+		_turn_step = step_turn_delay
+	player_body.rotate_player(deg2rad(step_turn_angle) * sign(left_right))
 
 
 # This method verifies the movement provider has a valid configuration.
@@ -104,10 +94,14 @@ func _get_configuration_warning():
 	return ._get_configuration_warning()
 
 
+# Test if snap turning should be used
 func _snap_turning():
-	if turn_mode == TurnMode.SNAP:
-		return true
-	elif turn_mode == TurnMode.SMOOTH:
-		return false
-	else:
-		return XRToolsUserSettings.snap_turning
+	match turn_mode:
+		TurnMode.SNAP:
+			return true
+
+		TurnMode.SMOOTH:
+			return false
+
+		_:
+			return XRToolsUserSettings.snap_turning
