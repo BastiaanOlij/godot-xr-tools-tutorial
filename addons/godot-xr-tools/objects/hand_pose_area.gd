@@ -1,3 +1,4 @@
+tool
 class_name XRToolsHandPoseArea, "res://addons/godot-xr-tools/editor/icons/hand.svg"
 extends Area
 
@@ -8,7 +9,7 @@ extends Area
 ## of the VR hands.
 
 
-## Priority level for this 
+## Priority level for this hand pose area
 export var pose_priority : int
 
 ## Left hand pose settings (XRToolsHandPoseSettings)

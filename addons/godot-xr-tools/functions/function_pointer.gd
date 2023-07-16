@@ -3,21 +3,14 @@ class_name XRToolsFunctionPointer, "res://addons/godot-xr-tools/editor/icons/fun
 extends Spatial
 
 
+## XR Tools Function Pointer Script
 ##
-## Pointer Function Script
+## This script implements a pointer function for a players controller. Pointer
+## events (entered, exited, pressed, release, and movement) are delivered by
+## invoking signals on the target node.
 ##
-## @desc:
-##     This script implements a pointer function for a players controller. The
-##     pointer supports sending signals to XRToolsInteractableArea or
-##     XRToolsInteractableBody objects.
-##
-##     The following signals are sent to these objects:
-##      - pointer_pressed(at) with the pointer location
-##      - pointer_released(at) with the pointer location
-##      - pointer_moved(from, to) with the pointer movement
-##      - pointer_entered()
-##      - pointer_exited()
-##
+## Pointer target nodes commonly extend from [XRToolsInteractableArea] or
+## [XRToolsInteractableBody].
 
 
 ## Enumeration of laser show modes
@@ -33,6 +26,11 @@ enum LaserLength {
 	COLLIDE = 1		## Draw to collision
 }
 
+
+# Default pointer collision mask of 21:pointable
+const DEFAULT_MASK := 0b0000_0000_0001_0000_0000_0000_0000_0000
+
+
 ## Pointer enabled property
 export var enabled : bool = true setget set_enabled
 
@@ -42,7 +40,7 @@ export (LaserShow) var show_laser : int = LaserShow.SHOW setget set_show_laser
 ## Laser length property
 export (LaserLength) var laser_length : int = LaserLength.FULL
 
-## Show laser target
+## If true, the pointer target is shown
 export var show_target : bool = false
 
 ## Y Offset for pointer
@@ -52,7 +50,7 @@ export var y_offset : float = -0.05 setget set_y_offset
 export var distance : float = 10 setget set_distance
 
 ## Pointer collision mask
-export (int, LAYERS_3D_PHYSICS) var collision_mask : int = 15 setget set_collision_mask
+export (int, LAYERS_3D_PHYSICS) var collision_mask : int = DEFAULT_MASK setget set_collision_mask
 
 ## Enable pointer collision with bodies
 export var collide_with_bodies : bool = true setget set_collide_with_bodies
@@ -67,17 +65,29 @@ export (XRTools.Buttons) var active_button : int = XRTools.Buttons.VR_TRIGGER
 export var action = ""
 
 
-# Current target
+## Current target node
 var target : Spatial
 
-# Last target
+## Last target node
 var last_target : Spatial
 
-# Last collision point
+## Last collision point
 var last_collided_at : Vector3 = Vector3.ZERO
 
 # World scale
-var ws : float = 1.0
+var _world_scale : float = 1.0
+
+# Left controller node
+var _controller_left_node : ARVRController
+
+# Right controller node
+var _controller_right_node : ARVRController
+
+# Parent controller (if this pointer is childed to a specific controller)
+var _controller  : ARVRController
+
+# The currently active controller
+var _active_controller : ARVRController
 
 
 # Add support for is_class on XRTools classes
@@ -92,14 +102,36 @@ func _ready():
 		return
 
 	# Read the initial world-scale
-	ws = ARVRServer.world_scale
+	_world_scale = ARVRServer.world_scale
 
-	# If pointer-trigger is a button then subscribe to button signals
-	if active_button != XRTools.Buttons.VR_ACTION:
-		# Get button press feedback from controller
-		var controller := ARVRHelpers.get_arvr_controller(self)
-		controller.connect("button_pressed", self, "_on_button_pressed")
-		controller.connect("button_release", self, "_on_button_release")
+	# Check for a parent controller
+	_controller = ARVRHelpers.get_arvr_controller(self)
+	if _controller:
+		# Set as active on the parent controller
+		_active_controller = _controller
+
+		# If pointer-trigger is a button then subscribe to button signals
+		if active_button != XRTools.Buttons.VR_ACTION:
+			# Get button press feedback from controller
+			_controller.connect("button_pressed", self, "_on_button_pressed", [_controller])
+			_controller.connect("button_release", self, "_on_button_release", [_controller])
+	else:
+		# Get the left and right controllers
+		_controller_left_node = ARVRHelpers.get_left_controller(self)
+		_controller_right_node = ARVRHelpers.get_right_controller(self)
+
+		# Start out right hand controller
+		_active_controller = _controller_right_node
+
+		# Get button press feedback from both left and right controllers
+		_controller_left_node.connect("button_pressed", self, "_on_button_pressed",
+										[_controller_left_node])
+		_controller_left_node.connect("button_release", self, "_on_button_release",
+										[_controller_left_node])
+		_controller_right_node.connect("button_pressed", self, "_on_button_pressed",
+										[_controller_right_node])
+		_controller_right_node.connect("button_release", self, "_on_button_release",
+										[_controller_right_node])
 
 	# init our state
 	_update_y_offset()
@@ -117,6 +149,10 @@ func _process(_delta):
 	if Engine.editor_hint or !is_inside_tree():
 		return
 
+	# Track the active controller (if this pointer is not childed to a controller)
+	if _controller == null and _active_controller != null:
+		transform = _active_controller.transform
+
 	# If pointer-trigger is an action then check for action
 	if active_button == XRTools.Buttons.VR_ACTION and action != "":
 		if Input.is_action_just_pressed(action):
@@ -125,9 +161,9 @@ func _process(_delta):
 			_button_released()
 
 	# Handle world-scale changes
-	var new_ws := ARVRServer.world_scale
-	if (ws != new_ws):
-		ws = new_ws
+	var new_world_scale := ARVRServer.world_scale
+	if (_world_scale != new_world_scale):
+		_world_scale = new_world_scale
 		_update_y_offset()
 
 	if enabled and $RayCast.is_colliding():
@@ -271,8 +307,8 @@ func _update_show_laser() -> void:
 
 # Pointer Y offset update handler
 func _update_y_offset() -> void:
-	$Laser.translation.y = y_offset * ws
-	$RayCast.translation.y = y_offset * ws
+	$Laser.translation.y = y_offset * _world_scale
+	$RayCast.translation.y = y_offset * _world_scale
 
 
 # Pointer distance update handler
@@ -323,12 +359,15 @@ func _button_released() -> void:
 
 
 # Button pressed handler
-func _on_button_pressed(p_button : int) -> void:
+func _on_button_pressed(p_button : int, controller : ARVRController) -> void:
 	if p_button == active_button and enabled:
-		_button_pressed()
+		if controller == _active_controller:
+			_button_pressed()
+		else:
+			_active_controller = controller
 
 
 # Button released handler
-func _on_button_release(p_button : int) -> void:
+func _on_button_release(p_button : int, _controller : ARVRController) -> void:
 	if p_button == active_button and target:
 		_button_released()

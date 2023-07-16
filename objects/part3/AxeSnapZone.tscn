@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/godot-xr-tools/objects/snap_zone.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/opengameart.org/tools/gltf/axe01.gltf" type="PackedScene" id=2]
+[ext_resource path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tscn" type="PackedScene" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+albedo_color = Color( 0, 0, 0, 1 )
+
+[node name="AxeSnapZone" instance=ExtResource( 1 )]
+snap_mode = 1
+snap_require = "Axe"
+
+[node name="HighlightRing" parent="." index="1" instance=ExtResource( 3 )]
+
+[node name="axe01" parent="." index="2" instance=ExtResource( 2 )]
+transform = Transform( 0.01, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, -0.35, 0 )
+
+[node name="Cylinder" parent="axe01" index="0"]
+cast_shadow = 0
+material/0 = SubResource( 1 )
+
+[editable path="axe01"]

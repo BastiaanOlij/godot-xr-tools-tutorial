@@ -1,3 +1,27 @@
+# 3.4.0
+- Fixed footstep resource leak and added jump sounds and footstep signal
+- Added grab-point switching to pickable objects
+- Added return-to-snap-zone feature
+
+# 3.3.0
+- Added reset-scene and scene-control functions to scene-base
+- Fixed snap-zones stealing objects picked out of other near-by snap-zones
+- Improved player body so it can be used to child objects to
+- Updated scene/script default physics layers to match recommendations on website
+
+# 3.2.0
+- Minimum supported Godot version set to 3.5
+- Added glide option for turning with arm-roll
+- Added physics gravity effects on the player so they can walk around a planet
+- Added wall-walking movement provider
+- Cleaned the code to pass gdlint code checks
+- Modified to work with both WebXR and OpenXR
+- Added enable property to pickable objects
+- Added support for snap-on-drop to snap-zones
+- Added glide options for gaining altitude when flapping arms
+- Added option to disable snap-turn repeating by setting the delay to 0
+- Added capability for pointer function to auto-switch between controllers
+
 # 3.1.0
 - Improvements to our 2D in 3D viewport for filtering, unshaded, and transparency options
 - Fixed editor preview system for our 2D in 3D viewport
@@ -21,7 +45,6 @@
 - Added sprinting movement provider
 - Added support for setting hand-poses when the hand enters an area
 - Added support for setting grab-points on objects, and the grab-points supporting different hand-poses
-
 
 # 3.0.0
 - Included demo project with test scenes to evaluate features
