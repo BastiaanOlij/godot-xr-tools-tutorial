@@ -29,4 +29,4 @@ nodes/OpenHand/node = SubResource( 4 )
 nodes/OpenHand/position = Vector2( -600, 100 )
 nodes/Trigger/node = SubResource( 5 )
 nodes/Trigger/position = Vector2( -360, 20 )
-node_connections = [ "Trigger", 0, "OpenHand", "Trigger", 1, "ClosedHand1", "Grip", 0, "Trigger", "Grip", 1, "ClosedHand2", "output", 0, "Grip" ]
+node_connections = [ "output", 0, "Grip", "Trigger", 0, "OpenHand", "Trigger", 1, "ClosedHand1", "Grip", 0, "Trigger", "Grip", 1, "ClosedHand2" ]

@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/godot-xr-tools/misc/arvr_helpers.gd"
 }, {
+"base": "RigidBody",
+"class": "GunCasing",
+"language": "GDScript",
+"path": "res://objects/part4/Casing.gd"
+}, {
+"base": "XRToolsPickable",
+"class": "GunMagazine",
+"language": "GDScript",
+"path": "res://objects/part4/Magazine.gd"
+}, {
 "base": "Node",
 "class": "XRTools",
 "language": "GDScript",
@@ -316,6 +326,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "ARVRHelpers": "",
+"GunCasing": "",
+"GunMagazine": "",
 "XRTools": "",
 "XRToolsClimbable": "res://addons/godot-xr-tools/editor/icons/hand.svg",
 "XRToolsFallDamage": "",
