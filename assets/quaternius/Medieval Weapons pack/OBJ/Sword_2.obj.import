@@ -1,20 +1,22 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh"
+uid="uid://dp88lh5i4l7vu"
+path="res://.godot/imported/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh"
 
 [deps]
 
-files=[ "res://.import/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh" ]
+files=["res://.godot/imported/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh"]
 
 source_file="res://assets/quaternius/Medieval Weapons pack/OBJ/Sword_2.obj"
-dest_files=[ "res://.import/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh", "res://.import/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh" ]
+dest_files=["res://.godot/imported/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh", "res://.godot/imported/Sword_2.obj-ac86595ea82f4337ad6ae2948403e8f7.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

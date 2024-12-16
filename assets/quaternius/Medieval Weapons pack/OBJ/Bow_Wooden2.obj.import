@@ -1,20 +1,22 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh"
+uid="uid://b8y3s5eqkd0fd"
+path="res://.godot/imported/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh"
 
 [deps]
 
-files=[ "res://.import/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh" ]
+files=["res://.godot/imported/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh"]
 
 source_file="res://assets/quaternius/Medieval Weapons pack/OBJ/Bow_Wooden2.obj"
-dest_files=[ "res://.import/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh", "res://.import/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh" ]
+dest_files=["res://.godot/imported/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh", "res://.godot/imported/Bow_Wooden2.obj-145086f26b7a044743d3f6cd93bce103.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

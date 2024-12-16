@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bhk65nek3p5pn"]
+
+[ext_resource type="Shader" path="res://materials/highlight.gdshader" id="1_wxpvx"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_wxpvx")
+shader_parameter/albedo = Color(1, 1, 0.0941176, 1)
+shader_parameter/grow = 0.005
