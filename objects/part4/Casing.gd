@@ -1,4 +1,4 @@
-extends RigidBody
+extends RigidBody3D
 class_name GunCasing
 
 func set_is_bullet(p_is_bullet):

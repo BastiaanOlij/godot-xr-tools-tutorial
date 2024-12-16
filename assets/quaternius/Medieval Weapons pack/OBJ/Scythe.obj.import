@@ -1,20 +1,22 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh"
+uid="uid://blv4kvswdpcg"
+path="res://.godot/imported/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh"
 
 [deps]
 
-files=[ "res://.import/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh" ]
+files=["res://.godot/imported/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh"]
 
 source_file="res://assets/quaternius/Medieval Weapons pack/OBJ/Scythe.obj"
-dest_files=[ "res://.import/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh", "res://.import/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh" ]
+dest_files=["res://.godot/imported/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh", "res://.godot/imported/Scythe.obj-feef1b68f0441cf9ac9a9b579332020f.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

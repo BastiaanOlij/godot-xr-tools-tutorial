@@ -1,20 +1,22 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh"
+uid="uid://cu6xxoqlgs7ci"
+path="res://.godot/imported/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh"
 
 [deps]
 
-files=[ "res://.import/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh" ]
+files=["res://.godot/imported/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh"]
 
 source_file="res://assets/quaternius/Medieval Weapons pack/OBJ/Hammer_Double.obj"
-dest_files=[ "res://.import/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh", "res://.import/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh" ]
+dest_files=["res://.godot/imported/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh", "res://.godot/imported/Hammer_Double.obj-9e5747d8ec65131e0c7ca3297518bb0f.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
