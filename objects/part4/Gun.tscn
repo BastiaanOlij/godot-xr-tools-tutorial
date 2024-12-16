@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=4 uid="uid://i3g1e1jctafb"]
+[gd_scene load_steps=31 format=4 uid="uid://i3g1e1jctafb"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://ky6wn1db5wvb" path="res://assets/opengameart.org/pistol/Model/Pistol.glb" id="2"]
@@ -11,13 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="10"]
 [ext_resource type="AudioStream" uid="uid://cvni6as735t63" path="res://assets/freesound.org/171614__pjkasinski3__mag-reload-1.wav" id="11"]
 [ext_resource type="CylinderMesh" uid="uid://cfas5aopatrdk" path="res://objects/part4/empty_shell.tres" id="12"]
-[ext_resource type="ArrayMesh" path="res://objects/part4/bullet.tres" id="13"]
+[ext_resource type="ArrayMesh" uid="uid://cpwv5a3eph4to" path="res://objects/part4/bullet.tres" id="13"]
 [ext_resource type="Material" uid="uid://bhk65nek3p5pn" path="res://materials/highlight_material.tres" id="13_14bde"]
-[ext_resource type="PackedScene" path="res://objects/part4/Casing.tscn" id="14"]
+[ext_resource type="PackedScene" uid="uid://ncju0pxsbgmw" path="res://objects/part4/Casing.tscn" id="14"]
 [ext_resource type="ArrayMesh" uid="uid://b0yh1i1e2cbyy" path="res://assets/freegamearts.tuxfamily.org/flash/muzzleflash.obj" id="15"]
 [ext_resource type="AudioStream" uid="uid://cpn3q0qxbka30" path="res://assets/freesound.org/154934__klawykogut__empty-gun-shot.wav" id="16"]
 [ext_resource type="AudioStream" uid="uid://0if2hnm6x65p" path="res://assets/freesound.org/344142__brokenphono__gunshot-002.wav" id="17"]
-[ext_resource type="PackedScene" path="res://objects/part4/Bullet.tscn" id="18"]
+[ext_resource type="PackedScene" uid="uid://dw466qoruffq2" path="res://objects/part4/Bullet.tscn" id="18"]
 [ext_resource type="Material" path="res://assets/freegamearts.tuxfamily.org/flash/muzzle_flash_material.tres" id="19"]
 [ext_resource type="Animation" uid="uid://box80c46hfirf" path="res://objects/part4/eject_magazine_animation.tres" id="20_sx4vp"]
 [ext_resource type="Animation" path="res://objects/part4/empty_shoot_animation.tres" id="21_5b6ul"]
@@ -185,10 +185,6 @@ _data = {
 margin = 0.01
 radius = 0.05
 
-[sub_resource type="SphereMesh" id="SphereMesh_23jo8"]
-radius = 0.02
-height = 0.04
-
 [node name="Gun" groups=["HandGun"] instance=ExtResource("1")]
 script = ExtResource("9")
 casing_scene = ExtResource("14")
@@ -309,9 +305,6 @@ transform = Transform3D(1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.3
 
 [node name="GrabPointHandRight" parent="SlidePivot/SlidePickup" index="2" instance=ExtResource("4")]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, -0.0835305, -0.0126044, 0.0330878)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SlidePivot/SlidePickup" index="3"]
-mesh = SubResource("SphereMesh_23jo8")
 
 [connection signal="dropped" from="." to="." method="_on_Gun_dropped"]
 [connection signal="picked_up" from="." to="." method="_on_Gun_picked_up"]
