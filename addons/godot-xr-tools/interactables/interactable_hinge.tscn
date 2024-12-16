@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://dlrip4l2qbin6"]
+[gd_scene load_steps=2 format=3 uid="uid://bnvxqb33lltmj"]
 
 [ext_resource type="Script" path="res://addons/godot-xr-tools/interactables/interactable_hinge.gd" id="1"]
 

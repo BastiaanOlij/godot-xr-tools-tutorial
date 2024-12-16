@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://djp16wgl65pmg"]
+[gd_scene load_steps=2 format=3 uid="uid://c8jtmtuihfujs"]
 
 [ext_resource type="Script" path="res://addons/godot-xr-tools/audio/surface_audio.gd" id="1"]
 

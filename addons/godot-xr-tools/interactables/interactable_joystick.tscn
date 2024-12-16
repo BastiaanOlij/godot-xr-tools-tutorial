@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvd7c250mtg0m"]
+[gd_scene load_steps=2 format=3 uid="uid://du32t1mb2kd7x"]
 
 [ext_resource type="Script" path="res://addons/godot-xr-tools/interactables/interactable_joystick.gd" id="1"]
 

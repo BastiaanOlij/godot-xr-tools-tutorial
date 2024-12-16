@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://bnedv0u7ue2ps"]
+[gd_scene load_steps=14 format=3 uid="uid://bnedv0u7ue2ps"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="2"]
+[ext_resource type="Script" path="res://objects/part2/cube.gd" id="2_fd811"]
 [ext_resource type="Animation" uid="uid://nq3xh1olqipq" path="res://addons/godot-xr-tools/hands/animations/left/Grip Shaft.res" id="3"]
 [ext_resource type="Material" uid="uid://bhk65nek3p5pn" path="res://materials/highlight_material.tres" id="3_dbqkl"]
 [ext_resource type="Script" path="res://addons/godot-xr-tools/hands/poses/hand_pose_settings.gd" id="4"]
@@ -10,10 +11,12 @@
 [ext_resource type="Animation" uid="uid://c8dghcftg1thx" path="res://addons/godot-xr-tools/hands/animations/right/Grip Shaft.res" id="7"]
 
 [sub_resource type="BoxShape3D" id="1"]
+resource_local_to_scene = true
 margin = 0.01
 size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="BoxMesh" id="2"]
+resource_local_to_scene = true
 size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="Resource" id="5"]
@@ -25,7 +28,10 @@ script = ExtResource("4")
 closed_pose = ExtResource("7")
 
 [node name="Cube" instance=ExtResource("1")]
+script = ExtResource("2_fd811")
+size = Vector3(0.1, 0.1, 0.1)
 ranged_grab_method = 2
+second_hand_grab = 2
 
 [node name="CollisionShape3D" parent="." index="0"]
 shape = SubResource("1")
@@ -41,9 +47,19 @@ material_override = ExtResource("3_dbqkl")
 mesh = SubResource("2")
 
 [node name="GrabPointHandLeft" parent="." index="3" instance=ExtResource("2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0450284, 0.0490659, -0.0954277)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.045, 0.0490659, -0.0954277)
 hand_pose = SubResource("5")
 
 [node name="GrabPointHandRight" parent="." index="4" instance=ExtResource("6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0289199, 0.0480532, -0.0967992)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.045, 0.0480532, -0.0967992)
 hand_pose = SubResource("6")
+
+[node name="Weight01" type="Label3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.051)
+pixel_size = 0.001
+text = "1 Kg"
+
+[node name="Weight02" type="Label3D" parent="." index="6"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.051)
+pixel_size = 0.001
+text = "1 Kg"

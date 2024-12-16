@@ -48,6 +48,7 @@ margin = 0.01
 radius = 0.05
 
 [node name="Bow" instance=ExtResource("1")]
+mass = 5.0
 script = ExtResource("11")
 
 [node name="CollisionShape3D" parent="." index="0"]

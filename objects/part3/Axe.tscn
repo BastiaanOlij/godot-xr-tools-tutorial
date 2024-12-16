@@ -31,6 +31,8 @@ _surfaces = [{
 }]
 
 [node name="Axe" groups=["Axe"] instance=ExtResource("2")]
+mass = 6.0
+second_hand_grab = 2
 
 [node name="axe01" parent="." index="0" instance=ExtResource("5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0)
@@ -45,13 +47,29 @@ shape = SubResource("3")
 
 [node name="GrabPointHandLeft" parent="." index="3" instance=ExtResource("3")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.011919, -0.296101, 0.0947372)
+mode = 1
 
-[node name="GrabPointHandRight" parent="." index="4" instance=ExtResource("4")]
+[node name="GrabPointHandLeft2" parent="." index="4" instance=ExtResource("3")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.011919, -0.0215876, 0.0947372)
+mode = 2
+drive_position = 0.1
+drive_angle = 0.0
+drive_aim = 1.0
+
+[node name="GrabPointHandRight" parent="." index="5" instance=ExtResource("4")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.018658, -0.294979, 0.0943332)
+mode = 1
 
-[node name="GrabPointSnap" parent="." index="5" instance=ExtResource("6")]
+[node name="GrabPointHandRight2" parent="." index="6" instance=ExtResource("4")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.018658, -0.0179478, 0.0943332)
+mode = 2
+drive_position = 0.1
+drive_angle = 0.0
+drive_aim = 1.0
 
-[node name="XRToolsHighlightVisible" type="Node3D" parent="." index="6"]
+[node name="GrabPointSnap" parent="." index="7" instance=ExtResource("6")]
+
+[node name="XRToolsHighlightVisible" type="Node3D" parent="." index="8"]
 script = ExtResource("1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="XRToolsHighlightVisible" index="0"]

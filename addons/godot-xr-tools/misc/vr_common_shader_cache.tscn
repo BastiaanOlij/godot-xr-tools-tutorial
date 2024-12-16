@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://d3bq4m2si7ut0"]
+[gd_scene load_steps=8 format=3 uid="uid://btknduttnmoxf"]
 
 [ext_resource type="Script" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.gd" id="1"]
 [ext_resource type="Material" uid="uid://bk72wfw25ff0v" path="res://addons/godot-xr-tools/materials/teleport.tres" id="2_6822k"]
