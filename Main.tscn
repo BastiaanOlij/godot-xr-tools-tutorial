@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://assets/wahooney.itch.io/green_grid.tres" type="Material" id=1]
 [ext_resource path="res://addons/godot-openxr/scenes/first_person_controller_vr.tscn" type="PackedScene" id=2]
@@ -12,11 +12,13 @@
 [ext_resource path="res://addons/godot-xr-tools/player/player_body.tscn" type="PackedScene" id=10]
 [ext_resource path="res://objects/part2/Cube.tscn" type="PackedScene" id=11]
 [ext_resource path="res://addons/godot-xr-tools/functions/function_pickup.tscn" type="PackedScene" id=12]
-[ext_resource path="res://objects/part3/ToolBoard.tscn" type="PackedScene" id=13]
-[ext_resource path="res://objects/part3/Axe.tscn" type="PackedScene" id=14]
-[ext_resource path="res://objects/part3/Gun.tscn" type="PackedScene" id=15]
-[ext_resource path="res://objects/part3/BeltSnapZone.tscn" type="PackedScene" id=16]
-[ext_resource path="res://objects/part3/Magazine.tscn" type="PackedScene" id=17]
+[ext_resource path="res://objects/part3and4/ToolBoard.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/part3and4/Axe.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/part4/Gun.tscn" type="PackedScene" id=15]
+[ext_resource path="res://objects/part3and4/BeltSnapZone.tscn" type="PackedScene" id=16]
+[ext_resource path="res://objects/part4/Magazine.tscn" type="PackedScene" id=17]
+[ext_resource path="res://objects/livestream-bow/Bow.tscn" type="PackedScene" id=18]
+[ext_resource path="res://objects/livestream-bow/Arrow.tscn" type="PackedScene" id=19]
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 1000, 1000 )
@@ -41,6 +43,7 @@ visible = true
 [node name="FunctionTeleport" parent="FPController/LeftHandController" index="1" instance=ExtResource( 9 )]
 
 [node name="FunctionPickup" parent="FPController/LeftHandController" index="2" instance=ExtResource( 12 )]
+grab_collision_mask = 263172
 ranged_angle = 15.0
 
 [node name="RightHandController" parent="FPController" index="3"]
@@ -58,6 +61,7 @@ strafe = false
 turn_mode = 2
 
 [node name="FunctionPickup" parent="FPController/RightHandController" index="3" instance=ExtResource( 12 )]
+grab_collision_mask = 263172
 ranged_angle = 15.0
 
 [node name="PlayerBody" parent="FPController" instance=ExtResource( 10 )]
@@ -118,19 +122,34 @@ transform = Transform( 0.0241878, -0.030425, 0.999244, 0.999707, 0.00073613, -0.
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.5, 0, -2 )
 
 [node name="Gun" parent="Tables/Table03" instance=ExtResource( 15 )]
-transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.0717173, 1.02886, -0.32474 )
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -0.374167, 1.02886, -0.32474 )
 
 [node name="Magazine01" parent="Tables/Table03" instance=ExtResource( 17 )]
-transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0.0949464, 1.0516, -0.310356 )
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -0.207503, 1.0516, -0.310356 )
 
 [node name="Magazine02" parent="Tables/Table03" instance=ExtResource( 17 )]
-transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0.160047, 1.0516, -0.310356 )
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -0.142403, 1.0516, -0.310356 )
 
 [node name="Magazine03" parent="Tables/Table03" instance=ExtResource( 17 )]
-transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0.223379, 1.0516, -0.310356 )
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -0.079071, 1.0516, -0.310356 )
 
 [node name="Magazine04" parent="Tables/Table03" instance=ExtResource( 17 )]
-transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0.288453, 1.0516, -0.310356 )
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, -0.0139966, 1.0516, -0.310356 )
+
+[node name="Bow" parent="Tables/Table03" instance=ExtResource( 18 )]
+transform = Transform( -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, -9.31736e-21, 1, 1.24046, 1.04668, -0.0307049 )
+
+[node name="Arrow01" parent="Tables/Table03" instance=ExtResource( 19 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.74001, 1.06898, -0.246709 )
+
+[node name="Arrow02" parent="Tables/Table03" instance=ExtResource( 19 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.63335, 1.06898, -0.246709 )
+
+[node name="Arrow03" parent="Tables/Table03" instance=ExtResource( 19 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.529802, 1.06898, -0.246709 )
+
+[node name="Arrow04" parent="Tables/Table03" instance=ExtResource( 19 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.43591, 1.06898, -0.246709 )
 
 [node name="Table04" parent="Tables" instance=ExtResource( 6 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -3.5, 0, -2 )

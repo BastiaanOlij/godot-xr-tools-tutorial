@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://addons/godot-xr-tools/objects/pickable.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/quaternius/Medieval Weapons pack/OBJ/Arrow.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" type="PackedScene" id=5]
+[ext_resource path="res://objects/highlight_material.tres" type="Material" id=6]
+[ext_resource path="res://addons/godot-xr-tools/objects/highlight/highlight_visible.gd" type="Script" id=7]
+[ext_resource path="res://objects/livestream-bow/Arrow.gd" type="Script" id=8]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.01, 0.01, 0.35 )
+
+[node name="Arrow" groups=["Arrow"] instance=ExtResource( 1 )]
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 8 )
+release_mode = 0
+
+[node name="CollisionShape" parent="." index="0"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="ArrowMesh" type="MeshInstance" parent="." index="1"]
+transform = Transform( -1.09278e-08, 0, -0.25, 0, 0.25, 0, 0.25, 0, -1.09278e-08, 0.35, 0, 0 )
+mesh = ExtResource( 2 )
+
+[node name="GrabPointHandLeft" parent="." index="2" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.240323, 0.0399871, -0.0195515 )
+
+[node name="GrabPointHandRight" parent="." index="3" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.244491, 0.0573927, 0.0263746 )
+
+[node name="GrabPointSnap" parent="." index="4" instance=ExtResource( 3 )]
+
+[node name="XRToolsHighlightVisible" type="Spatial" parent="." index="5"]
+script = ExtResource( 7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="XRToolsHighlightVisible" index="0"]
+transform = Transform( -1.09278e-08, 0, -0.25, 0, 0.25, 0, 0.25, 0, -1.09278e-08, 0.35, 0, 0 )
+mesh = ExtResource( 2 )
+skeleton = NodePath("../..")
+material/0 = ExtResource( 6 )
+material/1 = ExtResource( 6 )
+material/2 = ExtResource( 6 )
+material/3 = ExtResource( 6 )
+
+[connection signal="body_entered" from="." to="." method="_on_Arrow_body_entered"]

@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Claymore.obj-a7d489a3e012c1d276cbc9f891874951.mesh"
+
+[deps]
+
+files=[ "res://.import/Claymore.obj-a7d489a3e012c1d276cbc9f891874951.mesh" ]
+
+source_file="res://assets/quaternius/Medieval Weapons pack/OBJ/Claymore.obj"
+dest_files=[ "res://.import/Claymore.obj-a7d489a3e012c1d276cbc9f891874951.mesh", "res://.import/Claymore.obj-a7d489a3e012c1d276cbc9f891874951.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286
