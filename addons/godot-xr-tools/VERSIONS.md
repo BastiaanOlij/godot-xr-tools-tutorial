@@ -1,3 +1,88 @@
+# 4.4.0
+- Minimum Godot version changed to 4.2
+- Add pickable action_released signal
+- Fix custom hand poses calling legacy remove_animation
+- Cleaned up StartXR
+- Allow grab-points and poses to work with different types of hand trackers
+- Add end_xr support to StartXR
+- Fixed vignette shader
+- Add visibility_changed notifications to Viewport2Din3D hosted scenes
+- Invisible Viewport2Din3D now disable physics and viewport updates
+- Add SnapPath
+- Improvements to collision hands so collision shapes of picked up objects
+  are added and we no longer have hands collide with dropped objects
+
+# 4.3.3
+- Fix Viewport2Din3D property forwarding
+
+# 4.3.2
+- Move fade logic into effect
+- Added collision fade support
+- Added fix for slowly sliding on slopes
+- Added fix for ground-control preventing jumping over objects
+- Added property forwarding for Viewport2Din3D
+- Added fix for open/close poses
+- Added rumble manager for haptic feedback
+- Fix unreliable wall-walking collision
+
+# 4.3.1
+- Fix saving project when using plugin-tools to set physics layers or enable OpenXR
+- Fix updating the editor-preview hand-pose
+- Fix jumping on slopes
+- Fix material warnings by converting binary .material files to .tres files
+- Fix staging to use threaded loading while starting the fade
+- Fix broken world-grab script
+
+# 4.3.0
+- Upgraded project to Godot 4.1 as the new minimum version.
+- Added reporting of stage load errors.
+- Blend player height changes and prevent the player from standing up under a low ceiling.
+- **minor-breakage** Added support for swapping held items between hands.
+- Added jog-in-place movement provider.
+- Added support for grappling on GridMap instances
+- **breakage** Added support for two-handed grabbing.
+- Added support for snapping hands to grab-points.
+- Added support for world-grab movement.
+- Fixed editor errors when using hand physics bones.
+- Added support for climbable grab-points.
+- Added control of keyboard or gamepad inputs to Viewport2Din3D instances.
+
+# 4.2.1
+- Fixed snap-zones showing highlight when disabled.
+- Fixed pickup leaving target highlighted after picking up.
+- Fixed collision hands getting stuck too far from the real hands.
+
+# 4.2.0
+- Environments can now be set normally in scenes loaded through the staging system.
+- Fixed issue with not being able to push rigid bodies when colliding with them.
+- Fixed player movement on slopes.
+- Fixed lag in finger-poke.
+- Added initial collision hand support.
+- Added support for custom materials for 2D in 3D viewport
+- Updated pointer to support visibility properties and events
+- Modified virtual keyboard to expose viewport controls and default to unshaded
+- Cleaned up teleport and added more properties for customization
+- Modified pickup highlighting to support pickables in snap-zones
+- Added "UI Objects" layer 23 for viewports to support interaction by pointer and poking
+- Fixed player scaling issues with crouching and poke
+- **minor-breakage** Added support for passing user data between staged scenes with default handling for spawn-points
+- Moved teleport logic to player and added teleport area node
+- Change pointer event dispatching
+- Added multi-touch on 2D in 3D viewports and virtual-keyboard
+- Added option to disable laser-pointers when close to specific bodies/areas
+
+# 4.1.0
+- Enhanced grappling to support collision and target layers
+- Added Godot Editor XR Tools menu for layers and openxr configuration
+- Improved gliding to support roll-turning while flapping
+- Added render_target_size_multiplier to StartXR (requires Godot 4.1+)
+
+# 4.0.0
+- Conversion to Godot 4
+- Fixed footstep resource leak and added jump sounds and footstep signal
+- Added grab-point switching to pickable objects
+- Added return-to-snap-zone feature
+
 # 3.4.0
 - Fixed footstep resource leak and added jump sounds and footstep signal
 - Added grab-point switching to pickable objects

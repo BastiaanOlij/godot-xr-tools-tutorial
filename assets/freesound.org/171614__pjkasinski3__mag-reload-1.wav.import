@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/171614__pjkasinski3__mag-reload-1.wav-6f7d855237da77431e8428033579cedc.sample"
+type="AudioStreamWAV"
+uid="uid://cvni6as735t63"
+path="res://.godot/imported/171614__pjkasinski3__mag-reload-1.wav-6f7d855237da77431e8428033579cedc.sample"
 
 [deps]
 
 source_file="res://assets/freesound.org/171614__pjkasinski3__mag-reload-1.wav"
-dest_files=[ "res://.import/171614__pjkasinski3__mag-reload-1.wav-6f7d855237da77431e8428033579cedc.sample" ]
+dest_files=["res://.godot/imported/171614__pjkasinski3__mag-reload-1.wav-6f7d855237da77431e8428033579cedc.sample"]
 
 [params]
 

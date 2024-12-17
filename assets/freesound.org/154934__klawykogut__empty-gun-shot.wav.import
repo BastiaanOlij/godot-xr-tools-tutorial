@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/154934__klawykogut__empty-gun-shot.wav-7bf29c2c61740626661bb8c1fe777dc2.sample"
+type="AudioStreamWAV"
+uid="uid://cpn3q0qxbka30"
+path="res://.godot/imported/154934__klawykogut__empty-gun-shot.wav-7bf29c2c61740626661bb8c1fe777dc2.sample"
 
 [deps]
 
 source_file="res://assets/freesound.org/154934__klawykogut__empty-gun-shot.wav"
-dest_files=[ "res://.import/154934__klawykogut__empty-gun-shot.wav-7bf29c2c61740626661bb8c1fe777dc2.sample" ]
+dest_files=["res://.godot/imported/154934__klawykogut__empty-gun-shot.wav-7bf29c2c61740626661bb8c1fe777dc2.sample"]
 
 [params]
 

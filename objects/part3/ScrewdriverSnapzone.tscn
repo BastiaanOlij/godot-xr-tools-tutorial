@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://plejml2peu5q"]
+
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="1"]
+[ext_resource type="Material" path="res://objects/part3/black.material" id="2"]
+[ext_resource type="PackedScene" uid="uid://bw6hw30dqmabw" path="res://assets/opengameart.org/tools/gltf/screwdriver01.gltf" id="3"]
+[ext_resource type="PackedScene" uid="uid://da2qgxxwwitl6" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tscn" id="4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2qie8"]
+resource_local_to_scene = true
+radius = 0.3
+
+[node name="ScrewdriverSnapZone" instance=ExtResource("1")]
+snap_require = "Screwdriver"
+
+[node name="CollisionShape3D" parent="." index="0"]
+shape = SubResource("SphereShape3D_2qie8")
+
+[node name="screwdriver01" parent="." index="1" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, -0.07, -0.02)
+
+[node name="Cylinder" parent="screwdriver01" index="0"]
+material_override = ExtResource("2")
+
+[node name="HighlightRing" parent="." index="2" instance=ExtResource("4")]
+
+[editable path="screwdriver01"]

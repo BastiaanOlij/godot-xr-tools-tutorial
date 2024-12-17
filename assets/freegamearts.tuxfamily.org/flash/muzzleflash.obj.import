@@ -1,20 +1,22 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh"
+uid="uid://b0yh1i1e2cbyy"
+path="res://.godot/imported/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh"
 
 [deps]
 
-files=[ "res://.import/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh" ]
+files=["res://.godot/imported/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh"]
 
 source_file="res://assets/freegamearts.tuxfamily.org/flash/muzzleflash.obj"
-dest_files=[ "res://.import/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh", "res://.import/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh" ]
+dest_files=["res://.godot/imported/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh", "res://.godot/imported/muzzleflash.obj-5cf2c3f958c98cf7e5a777830c6ed19d.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
-octahedral_compression=true
-optimize_mesh_flags=4286
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

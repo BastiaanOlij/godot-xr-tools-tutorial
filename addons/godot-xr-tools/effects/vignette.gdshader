@@ -1,14 +1,14 @@
 shader_type spatial;
-render_mode depth_test_disable, skip_vertex_transform, unshaded;
+render_mode depth_test_disabled, skip_vertex_transform, unshaded, cull_disabled;
 
-uniform vec4 color : hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform vec4 color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float radius = 1.0;
 uniform float fade = 0.05;
 
 varying float dist;
 
 void vertex() {
-	vec3 v = VERTEX;
+	vec2 v = VERTEX.xy;
 	dist = length(v);
 
 	// outer ring is 2.0, inner ring is 1.0, so this scales purely the inner ring
@@ -21,9 +21,11 @@ void vertex() {
 		vec4 eye = PROJECTION_MATRIX * vec4(0.0, 0.0, 100.0, 1.0);
 
 		// and we offset our inner circle
-		v.xy += eye.xy / eye.z;
+		v += eye.xy / eye.w;
 	}
-	POSITION = vec4(v, 1.0);
+
+	float z = PROJECTION_MATRIX[2][2] < 0.0 ? 0.0 : 1.0;
+	POSITION = vec4(v, z, 1.0);
 }
 
 void fragment() {

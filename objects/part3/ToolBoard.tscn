@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://ohip0ds2n7c6"]
+
+[ext_resource type="PackedScene" uid="uid://cm1vb0ejgr8i4" path="res://objects/part3/AxeSnapZone.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://plejml2peu5q" path="res://objects/part3/ScrewdriverSnapzone.tscn" id="1_k0yi1"]
+
+[sub_resource type="BoxMesh" id="1"]
+size = Vector3(0.5, 0.75, 0.01)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_us0o5"]
+margin = 0.005
+size = Vector3(0.5, 0.75, 0.01)
+
+[node name="ToolBoard" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+
+[node name="Board" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("1")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_us0o5")
+
+[node name="ScrewdriverSnapZone01" parent="." instance=ExtResource("1_k0yi1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.050746, 0.405183, 0.0296235)
+
+[node name="ScrewdriverSnapZone02" parent="." instance=ExtResource("1_k0yi1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.094746, 0.405183, 0.0296235)
+
+[node name="ScrewdriverSnapZone03" parent="." instance=ExtResource("1_k0yi1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.138746, 0.405183, 0.0296235)
+
+[node name="AxeSnapZone" parent="." instance=ExtResource("1")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.0956133, 0.538251, 0.0310723)
+snap_mode = 0
